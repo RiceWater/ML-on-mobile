@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   File ? retrievedImage;
   String statusAPI = "API Status: Offline";
+  String imgClass = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
             MaterialButton(
               onPressed: () {
                 uploadImage();
+                setState(() {
+                  imgClass = imgClass;
+                });
               },
               color: Colors.blue,
               child: const Text("Pick and Classify Image from Gallery using ML",
@@ -75,8 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontSize: 16)),
             ),
             const SizedBox(height: 20,),
-            retrievedImage != null ? Image.file(retrievedImage!) : Text(
-                statusAPI)
+            Text(imgClass),
+            Text(statusAPI)
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -142,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response.statusCode == 200) {
         // Successful response, handle data here
         var convertedResponse = await http.Response.fromStream(response);
-
+        imgClass = convertedResponse.body;
         print(
             'Response data: ${convertedResponse.body}');
       } else {
